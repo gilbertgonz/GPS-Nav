@@ -2,7 +2,7 @@
 
 import rospy
 from geometry_msgs.msg import Twist
-from std_msgs.msg import Float32, Int32
+from std_msgs.msg import Float32, Int32, Bool
 import RPi.GPIO as GPIO          
 import time
 
@@ -12,8 +12,10 @@ GPIO.setup(22,GPIO.OUT)
 GPIO.setup(23,GPIO.OUT)
 GPIO.setup(24,GPIO.OUT)
 
+total_time = 1.0
 
 def teleop(data):
+    rospy.loginfo("Driving RC mode")
     linear = data.linear.x
     angular = data.angular.z
 
@@ -48,8 +50,9 @@ def teleop(data):
         GPIO.output(23,GPIO.LOW)
         GPIO.output(24,GPIO.LOW)
 
-def autopilot(data):
+def autopilot(data, arg1=None):
     distance = data.data 
+    rospy.loginfo("Driving autonomous mode")
 
     while True:
         GPIO.output(17,GPIO.LOW)
@@ -58,22 +61,28 @@ def autopilot(data):
         GPIO.output(24,GPIO.LOW)
 
         time.sleep(total_time)
+        print("finished turn")
+        break
 
     # duration of travel
-    distance_duration = distance / wheel_speed 
+    distance_duration = round(distance / wheel_speed, 3)
+    print("distance recieved: " + str(distance)) 
+    print("duration: " + str(distance_duration)) 
 
-    # Set the start time
-    start_time = time.time()
-
-    # Run a loop until the elapsed time is greater than the duration
-    while time.time() - start_time < distance_duration:
+    while True:
         GPIO.output(17,GPIO.LOW)
         GPIO.output(22,GPIO.HIGH)
         GPIO.output(23,GPIO.LOW)
         GPIO.output(24,GPIO.HIGH)
 
+        time.sleep(distance_duration)
+        print("finished drive")
+        break
+
+    receive_message()
+
 def angle_data(data):
-    global wheel_speed, total_time
+    global wheel_speed
     ang = data.data
 
     # Set the speed of the wheels in meters per second
@@ -117,22 +126,23 @@ def angle_data(data):
 
     # Calculate the total time needed to turn the desired angle
     total_time = time_per_revolution * revolutions_needed
+    
+    autopilot(data, arg1=total_time)
 
-
-def control_check(data):
+def control_check(data=None):
+    global concheck
     concheck = data.data
-    print(concheck)
+    rospy.loginfo(concheck)
 
-    if concheck == 1:
-        rospy.Subscriber('distance_to_waypoint', Float32, autopilot, queue_size=1)
+    if concheck:
         rospy.Subscriber('angle_change', Int32, angle_data, queue_size=1)
-
-    elif concheck == 0:
+        rospy.Subscriber('distance_to_waypoint', Float32, autopilot, queue_size=1)
+    else:
         rospy.Subscriber('/cmd_vel', Twist, teleop, queue_size=1)  # Subscribing to teleop
 
 def receive_message():
     rospy.init_node('L298_driver')  # Initializing node
-    rospy.Subscriber('autopilot_check', Int32, control_check, queue_size=1)
+    rospy.Subscriber('autopilot_check', Bool, control_check, queue_size=1)
     rospy.spin()
 
 if __name__== '__main__':
