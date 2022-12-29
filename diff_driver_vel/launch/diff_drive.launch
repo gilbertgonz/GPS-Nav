@@ -1,0 +1,9 @@
+<launch>
+
+  <node name="L298_driver" pkg="diff_driver_vel" type="driverl298.py" output="screen"/>
+  <node name="RC_driver" pkg="diff_driver_vel" type="RC_driver.py" output="screen"/>
+  <node name="auto_driver" pkg="diff_driver_vel" type="auto_driver.py" output="screen"/>
+
+  <!--<include file="$(find usb_cam)/launch/usb_cam-test.launch" />-->
+  
+</launch>
