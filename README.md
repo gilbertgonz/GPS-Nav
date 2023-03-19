@@ -14,4 +14,6 @@ rplidar ros // driver for RPLiDARs
 
 rtabmap_ros // for generating 3D map and visual odometry data using RealSense camera
 
+roboclaw // driver for utlizing RoboClaw 2x15a motor controller
+
 move_base // ROS navigation package
