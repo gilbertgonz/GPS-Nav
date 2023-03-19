@@ -23,4 +23,4 @@ move_base // ROS navigation package
 # User Interface
 Note that the application of this project is to control an AVDL, thus there are certain functions in the UI that may not be relevant other AVs of different applications. However, customtkinter is a very popular and well-documented GUI API for Python 3 that was used to develop this UI; therefore altering the code for this UI can easily be done to better fit the needs of other applications.
 
-https://github.com/gilbertgonz/GPS-Nav/blob/main/images/minefinder_gui.png
+![image](https://user-images.githubusercontent.com/110450734/226206246-c204ac5e-e70d-4b0d-b520-d5b59ac275b2.png)
