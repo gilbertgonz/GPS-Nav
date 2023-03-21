@@ -10,6 +10,10 @@ Tested on:
 
 - common_msgs // ensures you have all message type dependencies
 
+- gazebo_ros_pkgs // ensures you have all dependencies for Gazebo-ROS interactiosn
+
+- turtlebot3_simulations // package for turtlebot3 Gazebo simulations
+
 - imu_tools // for extracting IMU data from Intel RealSense 435i
 
 - realsense-ros // driver for RealSense cameras
