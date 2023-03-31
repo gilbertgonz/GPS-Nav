@@ -5,4 +5,5 @@
 
   <node name="gps_publisher" pkg="sim_tools" type="gps_pub.py" output="screen"/>
   <node name="imu_to_compass_node" pkg="sim_tools" type="imu_to_compass.py" output="screen"/>
+  
 </launch>
