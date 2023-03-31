@@ -2,7 +2,7 @@
 This ROS package was developed with the intent to provide GPS-waypoint based autonomous navigation for an Autonomous Vehicle for Detecting Landmines (AVDL); my senior year Engineering project at Florida International University (FIU). It consists of a GUI where the user can see the current location of the robot, location of detected landmines, input waypoint locations, and buttons that the user can utlize to control the robot.
 
 # Dependencies
-Tested on:
+**Tested on:**
 
 - Ubuntu 20.04 (ROS Noetic)
 
@@ -19,12 +19,6 @@ Tested on:
 - realsense-ros // driver for RealSense cameras
 
 - rplidar ros // driver for RPLiDARs
-
-- rtabmap_ros // for generating 3D map and visual odometry data using RealSense camera
-
-- roboclaw // driver for utlizing RoboClaw 2x15a motor controller
-
-- move_base // ROS navigation package
 
 ## 1. Installation
 Ensure ROS Noetic and all previously mentioned dependencies are correctly installed in a Ubuntu 20.04 system
@@ -49,7 +43,9 @@ You don't need a physical robot to visualize the GUI. If you're building a physi
 
     roslaunch gps_loco control_minefinder.launch
     
-# User Interface
+# User Interface (How it works)
+Firstly, it it evident that the top section of the UI consists of 3 (pretty self-explanitory) sets of text entries: current coordinate, waypoint coordinate, and home coordinate. The 'Current Coordinate' section will display the current coordinates of the robot whnver the gps locks sgnal with a satelite. The text box on the left titled 'Detected Mines' is where all detected mines are logged. Whenever there is a certain threshold of metal detected or the computer vision system detects way may look like a landmine, also at a certain accuracy threshold, the current coordinates along with a short text of what was detected will be logged into the text box. The buttons catalog on the right consists of the main controls for the robot. The Autopilot' button begins execution of a landmine-detecting autopilot mission where all it needs is a set of waypoint coordinates which can be registered by entering the waypoint coordinates in their respective text boxes, and clicking the 'New Waypoint' button. The 'Return Home' button initiates a similar function as the 'Autopilot' button, however the home coordinates would be entered in its respective text entry ("Home Coordinate"). The 'Image Capture' button is pretty self-explanitory; it will return an image to the user of what the robot is seeing at any point in time and the image will display the current gps location of the robot on the top left, as well as any landmines that it may detect through the computer vision system (please refer to the next image figure for reference). Lastly, the 'Stop/RC' button is the emergency stop button that stops the robot of any autopilot missions and immediately initates remote controlled mode.
+
 Note that the application of this project is to control an AVDL, thus there are certain functions in the UI that may not be relevant other AVs of different applications. However, `customtkinter` is a very popular and well-documented GUI API for Python 3 that was used to develop this UI; therefore altering the code for this UI can easily be done to better fit other applications.
 
 ![image](https://user-images.githubusercontent.com/110450734/226206246-c204ac5e-e70d-4b0d-b520-d5b59ac275b2.png)
