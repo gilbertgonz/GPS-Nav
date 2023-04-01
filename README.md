@@ -52,4 +52,4 @@ Note that the application of this project is to control an AVDL, thus there are 
 
 
 # Demo
-![](official_demo.gif)
+![](final_official_demo.gif)
