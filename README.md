@@ -50,4 +50,6 @@ Firstly, it is evident that the top section of the UI consists of three self-exp
 
 Note that the application of this project is to control an AVDL, thus there are certain functions in the UI that may not be relevant other AVs of different applications. However, `customtkinter` is a very popular and well-documented GUI API for Python 3 that was used to develop this UI; therefore altering the code for this UI can easily be done to better fit other applications.
 
+
+# Demo
 ![](demo.gif)
