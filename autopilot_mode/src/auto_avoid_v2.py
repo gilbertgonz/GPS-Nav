@@ -19,9 +19,9 @@ class ObstacleAvoid:
         if self.mode:
             # Initializing Twist and Distance Thresholds
             cmd_vel = Twist()
-            dist_thre = 0.7
-            emerg_dist_thre = 0.2
-            max_speed = 0.15
+            dist_thre = 1.0
+            emerg_dist_thre = 0.25
+            max_speed = 0.2
 
             # Filtering 'inf' values from /scan topic
             for i in range(self.range_len):  
@@ -38,45 +38,48 @@ class ObstacleAvoid:
             range_right2_avg = sum(ranges[30:60]) / 30.0
             range_right3_avg = sum(ranges[60:90]) / 30.0
 
-            ## Implemetning Obstacle Avoidance (modifies variation of the Braitenburg vehicle algorithm)
-            # Avoiding obstacle on left side, turning right
+            right_avg_total = (range_right1_avg + range_right2_avg + range_right3_avg) / 3.0
+            left_avg_total = (range_left1_avg + range_left2_avg + range_left3_avg) / 3.0
+
+            # Implementing Obstacle Avoidance (which is a modified variation of the Braitenburg vehicle algorithm)
+            ## Avoiding obstacle on left side, turning right
             if range_left1_avg < dist_thre:  
-                cmd_vel.linear.x = 0.0
-                cmd_vel.angular.z = 0.4
-                # rospy.loginfo("Turn right")
+                cmd_vel.linear.x = max_speed / 2
+                cmd_vel.angular.z = 0.7
+                # rospy.loginfo("Turn left 1")
                 self.cmd_vel_pub.publish(cmd_vel)
             if range_left2_avg < dist_thre:
                 cmd_vel.linear.x = max_speed / 2
-                cmd_vel.angular.z = 0.3
-                # rospy.loginfo("Turn right")
+                cmd_vel.angular.z = 0.6
+                # rospy.loginfo("Turn left 2")
                 self.cmd_vel_pub.publish(cmd_vel) 
             if range_left3_avg < dist_thre:
                 cmd_vel.linear.x = max_speed
-                cmd_vel.angular.z = 0.2
-                # rospy.loginfo("Turn right")
+                cmd_vel.angular.z = 0.5
+                # rospy.loginfo("Turn left 3")
                 self.cmd_vel_pub.publish(cmd_vel)  
 
-            # Avoiding obstacle on right side, turning left
+            ## Avoiding obstacle on right side, turning left
             if range_right1_avg < dist_thre:  
-                cmd_vel.linear.x = 0.0
-                cmd_vel.angular.z = -0.4
-                # rospy.loginfo("Turn left")
+                cmd_vel.linear.x = max_speed / 2
+                cmd_vel.angular.z = -0.7
+                # rospy.loginfo("Turn right 1")
                 self.cmd_vel_pub.publish(cmd_vel)
             if range_right2_avg < dist_thre:
                 cmd_vel.linear.x = max_speed / 2
-                cmd_vel.angular.z = -0.3
-                # rospy.loginfo("Turn left")
+                cmd_vel.angular.z = -0.6
+                # rospy.loginfo("Turn right 2")
                 self.cmd_vel_pub.publish(cmd_vel) 
             if range_right3_avg < dist_thre:
                 cmd_vel.linear.x = max_speed
-                cmd_vel.angular.z = -0.2
-                # rospy.loginfo("Turn left")
+                cmd_vel.angular.z = -0.5
+                # rospy.loginfo("Turn right 3")
                 self.cmd_vel_pub.publish(cmd_vel)   
 
-            # Emergency stop and reverse if obstacles are too close
+            ## Emergency stop and reverse if obstacles are too close
             for i in chain(range(300, 359), range(0, 60)):  
                 if ranges[i] < emerg_dist_thre:
-                    cmd_vel.linear.x = -0.1
+                    cmd_vel.linear.x = -max_speed
                     cmd_vel.angular.z = 0.0
                     # rospy.loginfo("Reverse")
                     self.cmd_vel_pub.publish(cmd_vel)

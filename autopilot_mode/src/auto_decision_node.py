@@ -4,6 +4,8 @@ import rospy
 from std_msgs.msg import Bool, String
 from sensor_msgs.msg import LaserScan
 
+## TODO: Get GPS data in simulation
+
 class AutoDecisionNode:
     def __init__(self):
         rospy.init_node('auto_decision_node')
@@ -11,7 +13,7 @@ class AutoDecisionNode:
         self.status_string_pub = rospy.Publisher('status_string', String, queue_size=10) 
         self.obstacle_pub = rospy.Publisher('/obstacle_mode', Bool, queue_size=10)
         self.gps_pub = rospy.Publisher('/gps_mode', Bool, queue_size=10)
-        self.distance_threshold = rospy.get_param('~distance_threshold', 0.7)
+        self.distance_threshold = rospy.get_param('~distance_threshold', 1.0)
         self.obstacle_mode = False
         self.gps_mode = False
         self.mode = False
@@ -46,28 +48,28 @@ class AutoDecisionNode:
         range_right2_avg = sum(ranges[30:60]) / 30.0
         range_right3_avg = sum(ranges[60:90]) / 30.0
         range_avgs = [range_left1_avg, range_left2_avg, range_left3_avg, range_right1_avg, range_right2_avg, range_right3_avg]
-        # print("middle: ", str(range_middle_avg))
-        # print("right: ", str(range_right_avg))
-        # print("left: ", str(range_left_avg))
-        # print("point: ", str(ranges[359]))
         
         if self.mode:
-            for i in range(len(range_avgs)):
-                if (range_avgs[i] < self.distance_threshold):
-                    self.obstacle_pub.publish(True)
-                    self.gps_pub.publish(False)
+            # for i in range(len(range_avgs)):
+            #     if (range_avgs[i] < self.distance_threshold):
+            if any(x < self.distance_threshold for x in range_avgs):
+                self.obstacle_pub.publish(True)
+                self.gps_pub.publish(False)
 
-                    string = "Objects Close"
-                    self.status_string_pub.publish(string)
-                    rospy.loginfo(string)
-                else:
-                    self.obstacle_pub.publish(False)
-                    self.gps_pub.publish(True)
-                        
-                    string = "Objects Far"
-                    self.status_string_pub.publish(string)
-                    # rospy.loginfo(string)
+                string = "Objects Close"
+                self.status_string_pub.publish(string)
+                # rospy.loginfo(string)
+            else:
+                self.obstacle_pub.publish(False)
+                self.gps_pub.publish(True)
+                    
+                string = "Objects Far"
+                self.status_string_pub.publish(string)
+                # rospy.loginfo(string)
         else:
+            self.obstacle_pub.publish(False)
+            self.gps_pub.publish(False)
+            
             string = "RC Mode"
             self.status_string_pub.publish(string)
             rospy.loginfo(string)
