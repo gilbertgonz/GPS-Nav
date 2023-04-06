@@ -115,6 +115,14 @@ def minelogger():
     mineLog.insert(0.0, str(round(lat1, 11)))
     mineLog.insert(0.0, "\n")
 
+    connections = mine_coor_pub.get_num_connections()
+    mine_coor = NavSatFix()
+    mine_coor.latitude = lat1
+    mine_coor.longitude = long1
+
+    if connections > 0:  # ensuring there is a connection before publishing
+        mine_coor_pub.publish(mine_coor) # publishing mine coordinate
+
 def mineloggerCV():
     mineLog.insert(0.0, "(" + mine_type + ")")
     mineLog.insert(0.0, " ")
@@ -122,6 +130,14 @@ def mineloggerCV():
     mineLog.insert(0.0, ", ")
     mineLog.insert(0.0, str(round(lat1, 11)))
     mineLog.insert(0.0, "\n")
+
+    connections = mine_coor_pub.get_num_connections()
+    mine_coor = NavSatFix()
+    mine_coor.latitude = lat1
+    mine_coor.longitude = long1
+
+    if connections > 0:  # ensuring there is a connection before publishing
+        mine_coor_pub.publish(mine_coor) # publishing mine coordinate
 
 def lat_current1():
     if lat_current.winfo_exists():
@@ -289,6 +305,7 @@ if __name__ == "__main__":
 
     if security_check:
         gps_waypoint_pub = rospy.Publisher('waypoint_coordinate', NavSatFix, queue_size=1)
+        mine_coor_pub = rospy.Publisher('mine_coordinate', NavSatFix, queue_size=1)
         autopilot_pub = rospy.Publisher('autopilot_check', Bool, queue_size=1)
         img_cap_pub = rospy.Publisher('img_capture', Int32, queue_size=1)
         mine_string_pub = rospy.Publisher('mine_string', String, queue_size=1)
