@@ -56,7 +56,7 @@ class MapNode:
         while not rospy.is_shutdown():
             try:
                 self.generate_map()
-                # rospy.loginfo("Map generated.")
+                # rospy.loginfo("host name Map generated.")
             except FileNotFoundError:
                 rospy.loginfo("GPS data file not found.")
             rate.sleep()
