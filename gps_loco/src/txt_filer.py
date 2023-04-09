@@ -5,7 +5,8 @@ from sensor_msgs.msg import NavSatFix
 import datetime
 
 timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-filename = f'/home/first_ws/src/gps_loco/src/txt_files/gps_data_{timestamp}.txt'
+# filename = f'/home/gilberto/first_ws/src/gps_loco/src/txt_files/gps_data_{timestamp}.txt'
+filename = '/home/gilberto/first_ws/src/gps_loco/src/txt_files/test.txt'
 
 def callback_gps(data):
     if data.latitude and data.longitude:

@@ -3,24 +3,31 @@
 import rospy
 import folium
 import datetime
-#!/usr/bin/env python3
-
-import rospy
-import folium
-import datetime
-import argparse
+import os
 
 class MapNode:
-    def __init__(self, filename):
+    def __init__(self):
         self.map = None
         self.prev_latitude = None
         self.prev_longitude = None
-        self.filename = filename
+        self.filename = None
         self.timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        self.map_filename = f'/home/first_ws/src/gps_loco/src/maps/map_{self.timestamp}.html'
+        self.map_filename = f'/home/gilberto/first_ws/src/gps_loco/src/maps/map_{self.timestamp}.html'
         self.prev_num_lines = 0
 
     def generate_map(self):
+        if self.filename is None:
+            # find the latest generated file with .txt extension in the current working directory
+            files = os.listdir("/home/gilberto/first_ws/src/gps_loco/src/txt_files")
+            txt_dir = '/home/gilberto/first_ws/src/gps_loco/src/txt_files/'
+            txt_files = [f for f in files if f.endswith(".txt")]
+            if txt_files:
+                # most_recent_file = max(txt_files, key=os.path.getctime)
+                # self.filename = os.path.join(txt_dir, most_recent_file)
+                self.filename = '/home/gilberto/first_ws/src/gps_loco/src/txt_files/test.txt'
+            else:
+                return
+
         num_lines = sum(1 for line in open(self.filename))
         if num_lines <= self.prev_num_lines:
             return
@@ -33,7 +40,7 @@ class MapNode:
             longitude = float(data[1])
 
             if self.map is None:
-                self.map = folium.Map(location=[float(latitude), float(longitude)], zoom_start=100)
+                self.map = folium.Map(location=[float(latitude), float(longitude)], zoom_start=1000)
 
             # If the data is the current coordinates of the robot
             if len(data) == 2:
@@ -52,20 +59,16 @@ class MapNode:
         self.prev_num_lines = num_lines
 
     def run(self):
-        rate = rospy.Rate(1)  # 1 Hz
+        rate = rospy.Rate(.05)  # 1 Hz
         while not rospy.is_shutdown():
             try:
                 self.generate_map()
-                # rospy.loginfo("host name Map generated.")
+                # rospy.loginfo("Map generated.")
             except FileNotFoundError:
                 rospy.loginfo("GPS data file not found.")
             rate.sleep()
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-f', '--filename', type=str, default='/home/first_ws/src/gps_loco/src/txt_files/miami_data.txt', help='GPS data file name')
-    args = parser.parse_args()
-    
+if __name__ == '__main__':  
     rospy.init_node('map_node')
-    map_node = MapNode(args.filename)
+    map_node = MapNode()
     map_node.run()
