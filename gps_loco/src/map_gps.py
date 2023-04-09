@@ -12,20 +12,20 @@ class MapNode:
         self.prev_longitude = None
         self.filename = None
         self.timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        self.map_filename = f'/home/gilberto/first_ws/src/gps_loco/src/maps/map_{self.timestamp}.html'
+        self.map_filename = f'/home/first_ws/src/gps_loco/src/maps/map_{self.timestamp}.html'
         self.prev_num_lines = 0
 
-    def generate_map(self):
+    def generate_map(self, event):
         try:
             if self.filename is None:
                 # find the latest generated file with .txt extension in the current working directory
-                files = os.listdir("/home/gilberto/first_ws/src/gps_loco/src/txt_files")
-                txt_dir = '/home/gilberto/first_ws/src/gps_loco/src/txt_files/'
+                files = os.listdir("/home/first_ws/src/gps_loco/src/txt_files")
+                txt_dir = '/home/first_ws/src/gps_loco/src/txt_files/'
                 txt_files = [f for f in files if f.endswith(".txt")]
                 if txt_files:
                     # most_recent_file = max(txt_files, key=os.path.getctime)
                     # self.filename = os.path.join(txt_dir, most_recent_file)
-                    self.filename = '/home/gilberto/first_ws/src/gps_loco/src/txt_files/test.txt'
+                    self.filename = '/home/first_ws/src/gps_loco/src/txt_files/test1.txt'
                 else:
                     return
 
@@ -46,7 +46,7 @@ class MapNode:
                 # If the data is the current coordinates of the robot
                 if len(data) == 2:
                     # Check if there are already previous coordinates to connect with
-                    if self.prev_latitude is not None and self.prev_longitude is not None: # if self.prev_latitude and self.prev_longitude:
+                    if self.prev_latitude and self.prev_longitude:
                         # Draw a line between the previous and current coordinates
                         folium.PolyLine(locations=[(self.prev_latitude, self.prev_longitude), (latitude, longitude)], color='blue').add_to(self.map)
                     # Set the current coordinates as previous for the next iteration
