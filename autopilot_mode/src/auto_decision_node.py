@@ -58,7 +58,7 @@ class AutoDecisionNode:
 
                 string = "Objects Close"
                 self.status_string_pub.publish(string)
-                # rospy.loginfo(string)
+                rospy.loginfo(string)
             else:
                 self.obstacle_pub.publish(False)
                 self.gps_pub.publish(True)

@@ -92,9 +92,9 @@ class GPSNav:
             # print(self.mode)
             if self.mode and self.dist_to_travel > self.waypoint_accuracy:
                 # Turning
-                # rospy.loginfo("Waypoint: %s" % (str(self.way_lat) + ", " + str(self.way_long)))
-                # rospy.loginfo("Current angle: {}".format(self.current_angle))
-                # rospy.loginfo("Desired angle: {}".format(self.desired_angle))
+                rospy.loginfo("Waypoint: %s" % (str(self.way_lat) + ", " + str(self.way_long)))
+                rospy.loginfo("Current angle: {}".format(self.current_angle))
+                rospy.loginfo("Desired angle: {}".format(self.desired_angle))
                 rospy.loginfo("Turning")
 
                 while abs(self.desired_angle - self.current_angle) > 0.5 and self.mode:
@@ -118,7 +118,7 @@ class GPSNav:
                 # Moving
                 dist_traveled = 0.0
                 rospy.loginfo("Moving")
-                # rospy.loginfo("Distance (m) to waypoint: %s", self.dist_to_travel)
+                rospy.loginfo("Distance (m) to waypoint: %s", self.dist_to_travel)
 
                 time_to_travel = self.dist_to_travel / self.max_speed
 

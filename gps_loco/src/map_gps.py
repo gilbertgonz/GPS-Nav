@@ -25,7 +25,7 @@ class MapNode:
                 if txt_files:
                     # most_recent_file = max(txt_files, key=os.path.getctime)
                     # self.filename = os.path.join(txt_dir, most_recent_file)
-                    self.filename = '/home/first_ws/src/gps_loco/src/txt_files/test1.txt'
+                    self.filename = '/home/first_ws/src/gps_loco/src/txt_files/test2.txt'
                 else:
                     return
 
