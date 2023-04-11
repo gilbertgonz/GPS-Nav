@@ -106,9 +106,9 @@ class GPSNav:
                         error += 360
 
                     if error > 0:
-                        self.twist_pub.publish(Twist(linear=Vector3(0.1, 0, 0), angular=Vector3(0, 0, -0.4)))
+                        self.twist_pub.publish(Twist(linear=Vector3(1.0, 0, 0), angular=Vector3(0, 0, -1.0)))
                     else:
-                        self.twist_pub.publish(Twist(linear=Vector3(0.1, 0, 0), angular=Vector3(0, 0, 0.4)))
+                        self.twist_pub.publish(Twist(linear=Vector3(1.0, 0, 0), angular=Vector3(0, 0, 1.0)))
 
                     if not self.mode:
                         break
@@ -122,7 +122,7 @@ class GPSNav:
 
                 time_to_travel = self.dist_to_travel / self.max_speed
 
-                self.twist_pub.publish(Twist(linear=Vector3(0.15, 0, 0), angular=Vector3(0, 0, 0)))
+                self.twist_pub.publish(Twist(linear=Vector3(1.0, 0, 0), angular=Vector3(0, 0, 0)))
                 
                 while dist_traveled < self.dist_to_travel and self.mode:
                     dist_traveled += self.max_speed * self.rate.sleep_dur.to_sec()

@@ -13,7 +13,7 @@ class AutoDecisionNode:
         self.status_string_pub = rospy.Publisher('status_string', String, queue_size=10) 
         self.obstacle_pub = rospy.Publisher('/obstacle_mode', Bool, queue_size=10)
         self.gps_pub = rospy.Publisher('/gps_mode', Bool, queue_size=10)
-        self.distance_threshold = rospy.get_param('~distance_threshold', 1.0)
+        self.distance_threshold = rospy.get_param('~distance_threshold', 0.7)
         self.obstacle_mode = False
         self.gps_mode = False
         self.mode = False
@@ -34,31 +34,43 @@ class AutoDecisionNode:
     def lidar_callback(self, data):
         ranges = list(data.ranges)
         number_of_readings = len(ranges)
+        # print(number_of_readings)  # 1147
 
         for i in range(len(ranges)):
             if ranges[i] == float("inf"):
                 ranges[i] = 12.0
         ranges = tuple(ranges)
         
-        range_left1_avg = sum(ranges[330:359]) / 30.0
-        range_left2_avg = sum(ranges[300:330]) / 30.0
-        range_left3_avg = sum(ranges[270:300]) / 30.0
+        range_left1_avg = sum(ranges[number_of_readings*11//12:number_of_readings]) / (number_of_readings//12) # sum(ranges[330:359]) / 30.0
+        range_left2_avg = sum(ranges[number_of_readings*5//6:number_of_readings*11//12]) / (number_of_readings//12) # sum(ranges[300:330]) / 30.0
+        range_left3_avg = sum(ranges[number_of_readings*3//4:number_of_readings*5//6]) / (number_of_readings//12) # sum(ranges[270:300]) / 30.0
 
-        range_right1_avg = sum(ranges[0:30]) / 30.0
-        range_right2_avg = sum(ranges[30:60]) / 30.0
-        range_right3_avg = sum(ranges[60:90]) / 30.0
+        range_right1_avg = sum(ranges[0:number_of_readings//12]) / (number_of_readings//12) # sum(ranges[0:30]) / 30.0
+        range_right2_avg = sum(ranges[number_of_readings//12:number_of_readings//6]) / (number_of_readings//12) # sum(ranges[30:60]) / 30.0
+        range_right3_avg = sum(ranges[number_of_readings//6:number_of_readings//4]) / (number_of_readings//12) # sum(ranges[60:90]) / 30.0
+        
         range_avgs = [range_left1_avg, range_left2_avg, range_left3_avg, range_right1_avg, range_right2_avg, range_right3_avg]
+
+        print("middle " + str(ranges[0]))
+        print("rear   " + str(ranges[number_of_readings//2]))
+        print("left   " + str(ranges[number_of_readings//4]))
+        print("right  " + str(ranges[number_of_readings*3//4]) + "\n")
+
+        # print("left  " + str(range_avgs[0:3]))
+        # print("right " + str(range_avgs[3:6]) + "\n")
+
+        # for i in range(0, number_of_readings):  
+        #         if ranges[i] < 0.3:
+        #             print("index " + str(i))
         
         if self.mode:
-            # for i in range(len(range_avgs)):
-            #     if (range_avgs[i] < self.distance_threshold):
             if any(x < self.distance_threshold for x in range_avgs):
                 self.obstacle_pub.publish(True)
                 self.gps_pub.publish(False)
 
                 string = "Objects Close"
                 self.status_string_pub.publish(string)
-                rospy.loginfo(string)
+                # rospy.loginfo(string)
             else:
                 self.obstacle_pub.publish(False)
                 self.gps_pub.publish(True)
@@ -72,7 +84,7 @@ class AutoDecisionNode:
             
             string = "RC Mode"
             self.status_string_pub.publish(string)
-            rospy.loginfo(string)
+            # rospy.loginfo(string)
 
     def receive_message(self):
         rospy.spin()

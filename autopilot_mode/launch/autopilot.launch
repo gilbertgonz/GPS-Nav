@@ -1,9 +1,9 @@
 <launch>
-  <node name="auto_gps" pkg="autopilot_mode" type="auto_gps.py" output="screen"/>
+  <!-- <node name="auto_gps" pkg="autopilot_mode" type="auto_gps.py" output="screen"/> -->
   <node name="auto_decision_node" pkg="autopilot_mode" type="auto_decision_node.py" output="screen"/>
-  <node name="obstacle_avoid" pkg="autopilot_mode" type="auto_avoid_v2.py" output="screen"/>
+  <!-- <node name="obstacle_avoid" pkg="autopilot_mode" type="auto_avoid_v2.py" output="screen"/> -->
 
-  <node name="gps_publisher" pkg="sim_tools" type="gps_pub.py" output="screen"/>
-  <node name="imu_to_compass_node" pkg="sim_tools" type="imu_to_compass.py" output="screen"/>
+  <!-- <node name="gps_publisher" pkg="sim_tools" type="gps_pub.py" output="screen"/>
+  <node name="imu_to_compass_node" pkg="sim_tools" type="imu_to_compass.py" output="screen"/> -->
   
 </launch>
