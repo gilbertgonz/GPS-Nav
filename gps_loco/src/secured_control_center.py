@@ -187,9 +187,9 @@ def classCV_callback(data):
     cla = data.data
 
     if cla == 0:
-        mine_type = "VS50"
-    if cla == 1:
         mine_type = "PFM-1"
+    if cla == 1:
+        mine_type = "VS50"
     if cla == 2:
         mine_type = "PMN"
 

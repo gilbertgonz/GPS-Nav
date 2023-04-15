@@ -10,7 +10,7 @@ from std_msgs.msg import Int32, Float32, Float32MultiArray, String
 from cv_bridge import CvBridge # Package to convert between ROS and OpenCV Images
 
 # Load custom model
-model = torch.hub.load('ultralytics/yolov5', 'custom', path = '/home/weights/best_v5.pt', force_reload=True, skip_validation=True)
+model = torch.hub.load('/home/gilberto/first_ws/src/mine_cam_finder/src/yolov5', 'custom', path = '/home/gilberto/weights/best_v5.pt', force_reload=True, skip_validation=True, source='local')
 
 global bbox
 
@@ -74,7 +74,7 @@ def callback(data):
 
 def receive_message():
   rospy.init_node('bounding_box')
-  rospy.Subscriber('/usb_cam/image_raw', Image, callback) # /usb_cam/image_raw
+  rospy.Subscriber('/usb_cam/image_raw', Image, callback) # /camera/color/image_raw
   rospy.spin()
   cv2.destroyAllWindows()
 

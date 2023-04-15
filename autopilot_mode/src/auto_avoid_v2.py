@@ -19,24 +19,24 @@ class ObstacleAvoid:
         if self.mode:
             # Initializing Twist and Distance Thresholds
             cmd_vel = Twist()
-            dist_thre = 1.0
-            emerg_dist_thre = 0.25
+            dist_thre = 0.8 #1.0
+            emerg_dist_thre = 0.35 #0.25
             max_speed = 1.0
 
             # Filtering 'inf' values from /scan topic
-            for i in range(self.range_len):  
+            for i in range(self.number_of_readings):  
                 if self.ranges[i] == float("inf"):
                     self.ranges[i] = self.range_max
             ranges = tuple(self.ranges)
 
             # Calculating relevant mean distance values of 6 equally divided sections (3 on the right and 3 on the left) at 180deg FOV
-            range_left1_avg = sum(ranges[330:359]) / 30.0
-            range_left2_avg = sum(ranges[300:330]) / 30.0
-            range_left3_avg = sum(ranges[270:300]) / 30.0
+            range_left1_avg = sum(ranges[self.number_of_readings*11//12:self.number_of_readings]) / (self.number_of_readings//12) # sum(ranges[330:359]) / 30.0
+            range_left2_avg = sum(ranges[self.number_of_readings*5//6:self.number_of_readings*11//12]) / (self.number_of_readings//12) # sum(ranges[300:330]) / 30.0
+            range_left3_avg = sum(ranges[self.number_of_readings*3//4:self.number_of_readings*5//6]) / (self.number_of_readings//12) # sum(ranges[270:300]) / 30.0
 
-            range_right1_avg = sum(ranges[0:30]) / 30.0
-            range_right2_avg = sum(ranges[30:60]) / 30.0
-            range_right3_avg = sum(ranges[60:90]) / 30.0
+            range_right1_avg = sum(ranges[0:self.number_of_readings//12]) / (self.number_of_readings//12) # sum(ranges[0:30]) / 30.0
+            range_right2_avg = sum(ranges[self.number_of_readings//12:self.number_of_readings//6]) / (self.number_of_readings//12) # sum(ranges[30:60]) / 30.0
+            range_right3_avg = sum(ranges[self.number_of_readings//6:self.number_of_readings//4]) / (self.number_of_readings//12) # sum(ranges[60:90]) / 30.0
 
             right_avg_total = (range_right1_avg + range_right2_avg + range_right3_avg) / 3.0
             left_avg_total = (range_left1_avg + range_left2_avg + range_left3_avg) / 3.0
@@ -46,34 +46,34 @@ class ObstacleAvoid:
             if range_left1_avg < dist_thre:  
                 cmd_vel.linear.x = max_speed / 2
                 cmd_vel.angular.z = max_speed #0.7
-                # rospy.loginfo("Turn left 1")
+                rospy.loginfo("Turn left 1")
                 self.cmd_vel_pub.publish(cmd_vel)
             if range_left2_avg < dist_thre:
                 cmd_vel.linear.x = max_speed / 2
                 cmd_vel.angular.z = max_speed #0.6
-                # rospy.loginfo("Turn left 2")
+                rospy.loginfo("Turn left 2")
                 self.cmd_vel_pub.publish(cmd_vel) 
             if range_left3_avg < dist_thre:
                 cmd_vel.linear.x = max_speed
                 cmd_vel.angular.z = max_speed #0.5
-                # rospy.loginfo("Turn left 3")
+                rospy.loginfo("Turn left 3")
                 self.cmd_vel_pub.publish(cmd_vel)  
 
             ## Avoiding obstacle on right side, turning left
             if range_right1_avg < dist_thre:  
                 cmd_vel.linear.x = max_speed / 2
                 cmd_vel.angular.z = -max_speed #-0.7
-                # rospy.loginfo("Turn right 1")
+                rospy.loginfo("Turn right 1")
                 self.cmd_vel_pub.publish(cmd_vel)
             if range_right2_avg < dist_thre:
                 cmd_vel.linear.x = max_speed / 2
                 cmd_vel.angular.z = -max_speed #-0.6
-                # rospy.loginfo("Turn right 2")
+                rospy.loginfo("Turn right 2")
                 self.cmd_vel_pub.publish(cmd_vel) 
             if range_right3_avg < dist_thre:
                 cmd_vel.linear.x = max_speed
                 cmd_vel.angular.z = -max_speed #-0.5
-                # rospy.loginfo("Turn right 3")
+                rospy.loginfo("Turn right 3")
                 self.cmd_vel_pub.publish(cmd_vel)   
 
             ## Emergency stop and reverse if obstacles are too close
@@ -81,11 +81,11 @@ class ObstacleAvoid:
                 if ranges[i] < emerg_dist_thre:
                     cmd_vel.linear.x = -max_speed
                     cmd_vel.angular.z = 0.0
-                    # rospy.loginfo("Reverse")
+                    rospy.loginfo("Reverse")
                     self.cmd_vel_pub.publish(cmd_vel)
                 
     def laser_callback(self, msg):
-        self.range_len= len(msg.ranges) 
+        self.number_of_readings = len(msg.ranges) 
         self.range_max = msg.range_max
         self.ranges = list(msg.ranges)
 

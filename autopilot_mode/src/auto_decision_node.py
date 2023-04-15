@@ -3,6 +3,7 @@
 import rospy
 from std_msgs.msg import Bool, String
 from sensor_msgs.msg import LaserScan
+from geometry_msgs.msg import Twist, Vector3
 
 ## TODO: Get GPS data in simulation
 
@@ -13,7 +14,8 @@ class AutoDecisionNode:
         self.status_string_pub = rospy.Publisher('status_string', String, queue_size=10) 
         self.obstacle_pub = rospy.Publisher('/obstacle_mode', Bool, queue_size=10)
         self.gps_pub = rospy.Publisher('/gps_mode', Bool, queue_size=10)
-        self.distance_threshold = rospy.get_param('~distance_threshold', 0.7)
+        self.distance_threshold = rospy.get_param('~distance_threshold', 0.8)
+        self.twist_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
         self.obstacle_mode = False
         self.gps_mode = False
         self.mode = False
@@ -51,17 +53,13 @@ class AutoDecisionNode:
         
         range_avgs = [range_left1_avg, range_left2_avg, range_left3_avg, range_right1_avg, range_right2_avg, range_right3_avg]
 
-        print("middle " + str(ranges[0]))
-        print("rear   " + str(ranges[number_of_readings//2]))
-        print("left   " + str(ranges[number_of_readings//4]))
-        print("right  " + str(ranges[number_of_readings*3//4]) + "\n")
+        # print("middle " + str(ranges[0]))
+        # print("rear   " + str(ranges[number_of_readings//2]))
+        # print("left   " + str(ranges[number_of_readings//4]))
+        # print("right  " + str(ranges[number_of_readings*3//4]) + "\n")
 
         # print("left  " + str(range_avgs[0:3]))
         # print("right " + str(range_avgs[3:6]) + "\n")
-
-        # for i in range(0, number_of_readings):  
-        #         if ranges[i] < 0.3:
-        #             print("index " + str(i))
         
         if self.mode:
             if any(x < self.distance_threshold for x in range_avgs):
@@ -76,15 +74,16 @@ class AutoDecisionNode:
                 self.gps_pub.publish(True)
                     
                 string = "Objects Far"
+                self.twist_pub.publish(Twist(linear=Vector3(0, 0, 0), angular=Vector3(0, 0, 0)))
                 self.status_string_pub.publish(string)
-                # rospy.loginfo(string)
+                rospy.loginfo(string)
         else:
             self.obstacle_pub.publish(False)
             self.gps_pub.publish(False)
             
             string = "RC Mode"
             self.status_string_pub.publish(string)
-            # rospy.loginfo(string)
+            rospy.loginfo(string)
 
     def receive_message(self):
         rospy.spin()

@@ -34,7 +34,7 @@ def callback1(img_data):
     string = "Image saved"
     status_string_pub.publish(string)
     print(string)
-    # imgcheck = 0
+    imgcheck = 0
 
   # print("counter = " + str(img_counter))
 

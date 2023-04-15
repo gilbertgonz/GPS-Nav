@@ -10,15 +10,15 @@ import time
 
 class ImageSubscriber:
     def __init__(self):
-        self.image_sub = rospy.Subscriber("/camera/color/image_raw", Image, self.callback)
+        self.image_sub = rospy.Subscriber("/usb_cam/image_raw", Image, self.callback)
         print("recieved")
         self.bridge = CvBridge()
-        self.counter = 0
+        self.counter = 52
 
     def callback(self, data):
-        cv_image = self.bridge.imgmsg_to_cv2(data)
+        cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
 
-        file_name = 'image_' + str(self.counter) + '.png'
+        file_name = 'gathered_img_data/image_' + str(self.counter) + '.png'
 
         cv2.imwrite(file_name, cv_image)
         rospy.loginfo('Saved image: ' + file_name)
