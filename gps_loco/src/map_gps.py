@@ -4,6 +4,7 @@ import rospy
 import folium
 import datetime
 import os
+import time
 
 class MapNode:
     def __init__(self):
@@ -25,14 +26,14 @@ class MapNode:
                 if txt_files:
                     # most_recent_file = max(txt_files, key=os.path.getctime)
                     # self.filename = os.path.join(txt_dir, most_recent_file)
-                    self.filename = '/home/gilberto/first_ws/src/gps_loco/src/txt_files/test.txt'
+                    self.filename = '/home/gilberto/first_ws/src/gps_loco/src/txt_files/test3.txt'
                 else:
                     return
 
-            num_lines = sum(1 for line in open(self.filename))
-            if num_lines <= self.prev_num_lines:
-                return
-            
+            # num_lines = sum(1 for line in open(self.filename))
+            # if num_lines <= self.prev_num_lines:
+            #     return
+
             with open(self.filename) as file:
                 lines = file.readlines()     
             for line in lines:
@@ -44,7 +45,7 @@ class MapNode:
                     self.map = folium.Map(location=[float(latitude), float(longitude)], zoom_start=1000)
 
                 # If the data is the current coordinates of the robot
-                if len(data) == 2:
+                if latitude and longitude:  # if len(data) == 2:
                     # Check if there are already previous coordinates to connect with
                     if self.prev_latitude and self.prev_longitude:
                         # Draw a line between the previous and current coordinates
@@ -57,19 +58,25 @@ class MapNode:
                     folium.Marker(location=[latitude, longitude], popup='Detected mine', icon=folium.Icon(color='red')).add_to(self.map)
 
             self.map.save(self.map_filename)
-            self.prev_num_lines = num_lines
+            # self.prev_num_lines = num_lines
 
         except FileNotFoundError:
             rospy.loginfo("GPS data file not found.")
             return
 
     def run(self):
-        rospy.Timer(rospy.Duration(1), self.generate_map) # generate_map will be called every 1 seconds
-        rospy.spin() # Keep the program running until ROS is shut down
+        rate = rospy.Rate(1)  # set the rate to 1 Hz
+        while not rospy.is_shutdown():
+            self.generate_map(None)
+            rate.sleep()
+        # # self.generate_map(None)
+        # rospy.Timer(rospy.Duration(1), self.generate_map) # generate_map will be called every 1 seconds
+        # rospy.spin() # Keep the program running until ROS is shut down
 
 if __name__ == '__main__':  
     rospy.init_node('map_node')
     map_node = MapNode()
+    # time.sleep(1)
     map_node.run()
 
 '''

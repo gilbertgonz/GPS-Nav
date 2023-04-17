@@ -154,7 +154,7 @@ def metal_detection_callback(data):
 
     metal_detect = data.data
     # print(metal_detect)
-    if metal_detect > 0:
+    if metal_detect:
         string = "Metal detected"
         mine_string_pub.publish(string)
         minelogger()  # if metal is detected, call the mineLogger function to log the current location of the detected mine

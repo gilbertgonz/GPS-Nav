@@ -1,14 +1,15 @@
 <launch>
-  <!-- <node name="gui_control" pkg="gps_loco" type="secured_control_center.py" output="screen"/> -->
+  <node name="gui_control" pkg="gps_loco" type="secured_control_center.py" output="screen"/>
   <!-- <node name="RC_driver" pkg="gps_loco" type="RC_driver.py" output="screen"/> -->
 
-  <node name="gps_txt_generator" pkg="gps_loco" type="txt_filer.py" output="screen"/>
-  <node name="map_node" pkg="gps_loco" type="map_gps.py" output="screen"/>
+  <!-- <node name="gps_txt_generator" pkg="gps_loco" type="txt_filer.py" output="screen"/>
+  <node name="map_node" pkg="gps_loco" type="map_gps.py" output="screen"/> -->
 
   <!-- <node name="bounding_box" pkg="mine_cam_finder" type="rosified_mine_detect.py" output="screen"/>
   <node name="image_capture" pkg="mine_cam_finder" type="image_cap.py" output="screen"/> -->
 
   <node name="gps_publisher" pkg="sim_tools" type="gps_pub.py" output="screen"/>
+  <node name="metal_detector_sim" pkg="sim_tools" type="metal_detector_sim.py" output="screen"/>
 
   <!-- <include file="$(find usb_cam)/launch/usb_cam-test.launch" /> -->
 </launch>

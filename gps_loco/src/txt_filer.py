@@ -11,12 +11,12 @@ filename = '/home/gilberto/first_ws/src/gps_loco/src/txt_files/test.txt'
 
 def callback_gps(data):
     if data.latitude and data.longitude:
-        with open(filename, "a") as file:
-            file.write("{}, {}\n".format(data.latitude, data.longitude))
+        with open(filename, "w") as file:
+            file.write("{}, {}".format(data.latitude, data.longitude))
     else:
         rospy.loginfo("No current coordinates")
 
-    time.sleep(2)
+    time.sleep(1)
 
 
 def callback_mine(data):
@@ -25,6 +25,8 @@ def callback_mine(data):
             file.write("{}, {}, mine\n".format(data.latitude, data.longitude))
     else:
         rospy.loginfo("No mine coordinates")
+
+    time.sleep(1)
 
 if __name__ == '__main__':
     rospy.init_node('gps_txt_generator', anonymous=True)

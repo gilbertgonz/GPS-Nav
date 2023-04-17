@@ -32,7 +32,7 @@ def callback(data):
   #rospy.loginfo("receiving video frame") # Output debugging info to the terminal
 
   # Make detections
-  model.conf = 0.5
+  model.conf = 0.75
   # model.max_det = 1
   results = model(img)
 
@@ -74,7 +74,7 @@ def callback(data):
 
 def receive_message():
   rospy.init_node('bounding_box')
-  rospy.Subscriber('/usb_cam/image_raw', Image, callback) # /camera/color/image_raw
+  rospy.Subscriber('/camera/color/image_raw', Image, callback) # /usb_cam/image_raw
   rospy.spin()
   cv2.destroyAllWindows()
 
