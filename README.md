@@ -48,7 +48,7 @@ This ROS package was developed with the intent to provide GPS-waypoint based aut
   <img width="320" height="150" src="https://github.com/gilbertgonz/GPS-Nav/blob/main/assets/sequrity.png?raw=true">
 </p>
 
-A simple security wall is generated when the program is ran and requires a passcode for all of the ROS nodes to launch. 
+A simple security wall is generated when the launch file is ran and requires a passcode for all of the ROS nodes to launch. 
 
 ## User Interface
 
