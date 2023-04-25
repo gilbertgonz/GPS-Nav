@@ -11,6 +11,7 @@
       * [User Interface](#user-interface)
    * [How to use](#how-to-use)
    * [Demo](#demo)
+   * [Docker](#docker)
   
 </details>
 
@@ -108,3 +109,8 @@ Ensure ROS Noetic and all previously mentioned dependencies are correctly instal
 
 # Demo
 ![](assets/final_official_demo.gif)
+
+# Docker
+I have also created an open source docker image containing all the required files/packages. You can use the following command to pull the docker image:
+
+    docker pull gilbertgonzalezz/avdl_docker:1.0
