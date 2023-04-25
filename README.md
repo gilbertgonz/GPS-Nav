@@ -49,7 +49,7 @@ This ROS package was developed with the intent to provide GPS-waypoint based aut
   <img width="320" height="150" src="https://github.com/gilbertgonz/GPS-Nav/blob/main/assets/sequrity.png?raw=true">
 </p>
 
-A simple security wall is generated when the launch file is ran and requires a passcode for all of the ROS nodes to launch. 
+When the main launch file is ran (see the [How to use](#how-to-use) section), a simple security wall is generated and requires a password for all of the ROS nodes to completely launch. The default password is '1', but it can be changed in the `secured_control_center.py` file.
 
 ## User Interface
 
