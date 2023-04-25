@@ -82,7 +82,7 @@ The 'Return Home' button initiates a similar function as the 'Autopilot' button;
 Lastly, the 'Stop/RC' button is the emergency stop button that stops the robot of any autopilot missions and immediately initiates remote controlled mode.
 
 # How to use
-Ensure ROS Noetic and all previously mentioned dependencies are correctly installed in a Ubuntu 20.04 system or docker
+Ensure ROS Noetic and all previously mentioned dependencies are correctly installed in a Ubuntu 20.04 system or docker (see the [Docker](#docker) section)
 ### 1. Clone and install:
 
     sudo apt install -y python-rosdep
