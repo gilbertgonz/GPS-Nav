@@ -15,7 +15,7 @@
 </details>
 
 # What is this?
-This ROS package was developed with the intent to provide GPS-waypoint based autonomous navigation for an Autonomous Vehicle for Detecting Landmines (AVDL); my senior year Engineering project at Florida International University (FIU). It consists of a GUI where the user can see the current location of the robot, location of detected landmines, input waypoint locations, and utlize buttons to control the robot.
+This ROS package was developed with the intent to provide GPS-waypoint based autonomous navigation for an Autonomous Vehicle for Detecting Landmines (AVDL); which was my senior year Engineering project at Florida International University (FIU). It consists of a GUI where the user can see the current location of the robot, location of detected landmines, input waypoint locations, and utlize buttons to control the robot.
 
 # Requirements
 **Tested on:**
@@ -66,13 +66,13 @@ The text box on the left titled 'Detected Mines' is where all detected mines are
 
 ## Buttons
 
-The buttons catalog on the right consists of the main controls for the robot. The 'Autopilot' button begins execution of a landmine-detecting autopilot mission, where all that is needed is a set of waypoint coordinates that can be registered by entering the waypoint coordinates in their respective text boxes and clicking the 'New Waypoint' button. While the robot is navigating, a GPS satellite map is generated in real-time showcasing the path of the robot and positions of detected landmines.
+The buttons catalog on the right consists of the main controls for the robot. The 'Autopilot' button begins execution of a landmine-detecting autopilot mission, where all that is needed is a set of waypoint coordinates that can be registered by entering the waypoint coordinates in their respective text boxes and clicking the 'New Waypoint' button. While the robot is navigating, a GPS satellite map is generated in real-time showcasing the path of the robot and positions of detected landmines:
 
 <p align="center">
   <img width="600" height="350" src="https://github.com/gilbertgonz/GPS-Nav/blob/main/assets/map_sample.png?raw=true">
 </p>
 
-The 'Return Home' button initiates a similar function as the 'Autopilot' button; however, the home coordinates would be entered in its respective text entry ("Home Coordinate"). The 'Image Capture' button is pretty self-explanatory; it returns an image to the user of what the robot is seeing at any point in time, displaying the current GPS location of the robot on the top left, as well as any landmines that it may detect through the computer vision system. 
+The 'Return Home' button initiates a similar function as the 'Autopilot' button; however, the home coordinates would be entered in its respective text entry ("Home Coordinate"). The 'Image Capture' button is pretty self-explanatory; it returns an image to the user of what the robot is seeing at any point in time, displaying the current GPS location of the robot on the top left, as well as any landmines that it may detect through the computer vision system: 
 
 <p align="center">
   <img width="580" height="350" src="https://github.com/gilbertgonz/GPS-Nav/blob/main/assets/cv_img.png?raw=true">
@@ -81,7 +81,7 @@ The 'Return Home' button initiates a similar function as the 'Autopilot' button;
 Lastly, the 'Stop/RC' button is the emergency stop button that stops the robot of any autopilot missions and immediately initiates remote controlled mode.
 
 # How to use
-Ensure ROS Noetic and all previously mentioned dependencies are correctly installed in a Ubuntu 20.04 system
+Ensure ROS Noetic and all previously mentioned dependencies are correctly installed in a Ubuntu 20.04 system or docker
 ### 1. Clone and install:
 
     sudo apt install -y python-rosdep
