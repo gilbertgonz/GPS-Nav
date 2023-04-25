@@ -114,3 +114,11 @@ Ensure ROS Noetic and all previously mentioned dependencies are correctly instal
 I have also created an open source docker image containing all the required files/packages. You can use the following command to pull the docker image:
 
     docker pull gilbertgonzalezz/avdl_docker:1.0
+    
+Start the Docker container by running:
+
+    docker run -it --rm gilbertgonzalezz/avdl_docker:1.0  # this command will remove the container when it is exited
+
+Ensure docker has access the your host machine's display, if you're having issues with this please refer to this article:
+
+    https://medium.com/@nihon_rafy/building-a-dockerized-gui-by-sharing-the-host-screen-with-docker-container-b660835fb722
