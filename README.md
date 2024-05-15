@@ -16,7 +16,8 @@
 </details>
 
 # What is this?
-This ROS package was developed with the intent to provide GPS-waypoint based autonomous navigation for an Autonomous Vehicle for Detecting Landmines (AVDL); which was my senior year capstone project at Florida International University (FIU). It consists of a GUI that displays the current location of the robot, location of detected landmines, input waypoint locations, and buttons to control the robot.
+
+This repository holds the code to my undergraduate senior design project: a landmine-detecting robot. Complete integration, from hardware to software. It uses machine learning for landmine detection and lidar for basic navigation. It also features a GUI showing robot location, location of detected landmines, waypoints, and buttons to control the robot.
 
 <p align="center">
   <img src="https://github.com/gilbertgonz/GPS-Nav/blob/main/assets/avdl1.jpg">
